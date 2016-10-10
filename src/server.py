@@ -13,13 +13,13 @@ def socketio_channel():
     try:
         action = request.get_json()['action']
         socketio.emit(action)
-        sent = True
+        is_sent = True
         message = 'Success'
     except KeyError:
-        sent = False
+        is_sent = False
         message = 'No action found, check your json'
     return jsonify({
-        'status': sent,
+        'sent': is_sent,
         'message': message,
     })
 
