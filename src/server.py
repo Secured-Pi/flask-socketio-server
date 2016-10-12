@@ -12,7 +12,11 @@ io = SocketIO(server)
 def socketio_channel():
     try:
         data = request.get_json()
-        io.emit(data['action'], room=data['serial'])
+        io.emit(
+            data['action'],
+            data,
+            room=data['serial']
+        )
         is_sent = True
         message = 'Success'
     except KeyError:
