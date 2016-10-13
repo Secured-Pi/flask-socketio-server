@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, jsonify, request
-from flask_socketio import SocketIO, join_room
+from flask_socketio import SocketIO, join_room, send
 
 server = Flask(__name__)
 io = SocketIO(server)
@@ -28,10 +28,14 @@ def socketio_channel():
     })
 
 
+@io.on('connect')
+def on_connect():
+    send('Connected!')
+
+
 @io.on('listening')
 def join(data):
     join_room(data['serial'])
-
 
 if __name__ == '__main__':
     io.run(server, port=5000, host='localhost', debug=True)
