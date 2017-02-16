@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""This is the Flask server module for Secured Pi.
+
+The Flask server is responsible for 2-way communication with the Raspberry Pi,
+and for receiving commands from the main Django server (such as, lock/unlock).
+"""
+
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, join_room, send
 
@@ -10,6 +16,7 @@ io = SocketIO(server)
 
 @server.route('/', methods=['POST'])
 def socketio_channel():
+    """Attempt to send command to RPi."""
     try:
         data = request.get_json()
         io.emit(
@@ -22,6 +29,7 @@ def socketio_channel():
     except KeyError:
         is_sent = False
         message = 'Invalid POST data'
+
     return jsonify({
         'sent': is_sent,
         'message': message,
@@ -30,11 +38,13 @@ def socketio_channel():
 
 @io.on('connect')
 def on_connect():
+    """Send connected message."""
     send('Connected!')
 
 
 @io.on('listening')
 def join(data):
+    """Join the communication channel."""
     join_room(data['serial'])
 
 if __name__ == '__main__':
