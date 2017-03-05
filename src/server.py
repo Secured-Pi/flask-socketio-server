@@ -17,6 +17,7 @@ io = SocketIO(server)
 @server.route('/', methods=['POST'])
 def socketio_channel():
     """Attempt to send command to RPi."""
+    print('incoming post request!')
     try:
         data = request.get_json()
         io.emit(
@@ -29,11 +30,8 @@ def socketio_channel():
     except KeyError:
         is_sent = False
         message = 'Invalid POST data'
-
-    return jsonify({
-        'sent': is_sent,
-        'message': message,
-    })
+    print(jsonify({'sent': is_sent, 'message': message}))
+    return jsonify({'sent': is_sent, 'message': message})
 
 
 @io.on('connect')
@@ -48,4 +46,5 @@ def join(data):
     join_room(data['serial'])
 
 if __name__ == '__main__':
-    io.run(server, port=5000, host='localhost', debug=True)
+    # io.run(server, port=5000, host='localhost', debug=True)
+    io.run(server, port=5000, host='0.0.0.0', debug=True)
