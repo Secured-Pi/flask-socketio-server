@@ -4,12 +4,10 @@ It also handles detecting a face, taking pictures, and sending to the main
 Django server.
 
 To use:
-First, install OpenCV, then clone this repo and cd into the project directory
+First, install OpenCV, then clone this repo and cd into the project directory.
+Note:  This software must be run with Python2 at the moment.
 
 ```
-python3 -m venv ENV
-source ENV/bin/activate
-pip install -r requirements.txt
-./server.py
+pip2 install -r requirements.txt
+python2 server.py
 ```
-
